@@ -8,7 +8,7 @@ import Vue from 'vue';
     Vue.prototype.$instances = {};
     
     // a list of Vue's life cycle function names
-    const lifecycle: string[] = ['beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestory', 'destroyed'];
+    const vueoptions: string[] = ['watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestory', 'destroyed'];
 
     function iterateQuerySelector(query: string, callback: (node: HTMLElement) => void) {
         var list = document.querySelectorAll(query);
@@ -42,7 +42,9 @@ import Vue from 'vue';
             var options = {
                 el: el,
                 data: {},
-                methods: {}
+                methods: {},
+                watch: {},
+                computed: {}
             };
             
             var value = el.attributes.getNamedItem("v-data").value;
@@ -62,13 +64,18 @@ import Vue from 'vue';
 
             for (var k in data) {
                 var v = data[k];
-                // add watch object to vue instance
-                if (v == 'watch' && typeof v == 'object') {
-                    options['watch'] = v;
+                if (k.startsWith('watch_')) {
+                    // add as a watch
+                    options.watch[k.substr(6)] = v;
+                    continue; 
+                }
+                if (k.startsWith('computed_')) {
+                    // add as computed
+                    options.computed[k.substr(9)] = v;
                     continue;
                 }
                 if (typeof v == 'function') {
-                    if (lifecycle.indexOf(k) != -1) {
+                    if (vueoptions.indexOf(k) != -1) {
                         options[k] = v;
                         continue;
                     }
