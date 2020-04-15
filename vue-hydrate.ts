@@ -90,7 +90,11 @@ import Vue from 'vue';
 
         // hydrate all registered vue components through Vue.component
         for (var tag in (Vue as any).options.components) {
-            iterateQuerySelector(tag, el => addVm(el, new Vue({el})));
+            iterateQuerySelector(tag, el => {
+                var vm = new Vue({el});
+                // the vm has only one instance
+                addVm(el, vm.$children[0]);
+            });
         }
     });
 })(Vue);
