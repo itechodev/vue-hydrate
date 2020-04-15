@@ -22,7 +22,7 @@
             </div>
             <div class="text-xs text-right">Showing {{ list.length }} items.</div>
 
-            <div class="cursor-pointer flex items-center py-1" v-for="i, index in list"  @click="i.done = !i.done;" @dblclick="list.splice(index, 1);">
+            <div class="select-none cursor-pointer flex items-center py-1" v-for="i, index in list" @click="i.done = !i.done;" @dblclick="list.splice(index, 1);">
                 <div :class="{'line-through text-gray-400': i.done}">{{ i.text }}</div>
                 <div class="ml-auto"> 
                     <div class="w-4 h-4 rounded-full" :class="{'border-green-400 border-4': i.done, 'border-gray-400 border': !i.done}"></div>

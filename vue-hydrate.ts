@@ -46,9 +46,10 @@ import Vue from 'vue';
             };
             
             var value = el.attributes.getNamedItem("v-data").value;
+            var data = {};
             if (value) {
                 try {
-                    options.data = (new Function('return ' + value))(this);
+                    data = (new Function('return ' + value))(this);
                 }
                 catch (err) {
                     console.error('Could not execute v-data expression. ', err);
@@ -59,8 +60,8 @@ import Vue from 'vue';
             // [Vue warn]: Failed to resolve directive: data
             el.attributes.removeNamedItem('v-data');
 
-            for (var k in options.data) {
-                var v = options.data[k];
+            for (var k in data) {
+                var v = data[k];
                 // add watch object to vue instance
                 if (v == 'watch' && typeof v == 'object') {
                     options['watch'] = v;
