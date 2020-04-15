@@ -12,7 +12,8 @@ import Vue from 'vue';
 
     function iterateQuerySelector(query: string, callback: (node: HTMLElement) => void) {
         var list = document.querySelectorAll(query);
-        for (var l of list) {
+        for (var i = 0; i < list.length; i++) {
+            var l = list[i];
             if (l.nodeType == Node.ELEMENT_NODE) {
                 callback(l as HTMLElement);
             }
@@ -21,7 +22,7 @@ import Vue from 'vue';
     
     // IE 9 compatible document ready
     function ready(fn: () => void) {
-        if (document.readyState != 'loading'){
+        if (document.readyState == 'complete') {
             fn();
         } else {
             document.addEventListener('DOMContentLoaded', fn);
@@ -33,6 +34,14 @@ import Vue from 'vue';
         if (ref) {
             Vue.prototype.$instances[ref.value] = ins;
         }
+    }
+
+    function startsWith(s, n) {
+        if (s.startsWith) {
+            return s.startsWith(n);
+        }
+        // ie9 support
+        return s.indexOf(n) == 0;
     }
 
     // wait for document to be ready
@@ -57,19 +66,19 @@ import Vue from 'vue';
                     console.error('Could not execute v-data expression. ', err);
                 }
             }
-
+            
             //  now remove the v-data to avoid err
             // [Vue warn]: Failed to resolve directive: data
             el.attributes.removeNamedItem('v-data');
 
             for (var k in data) {
                 var v = data[k];
-                if (k.startsWith('watch_')) {
+                if (startsWith(k, 'watch_')) {
                     // add as a watch
                     options.watch[k.substr(6)] = v;
                     continue; 
                 }
-                if (k.startsWith('computed_')) {
+                if (startsWith(k, 'computed_')) {
                     // add as computed
                     options.computed[k.substr(9)] = v;
                     continue;
