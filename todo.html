@@ -1,0 +1,56 @@
+<html>
+<head>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="vue-hydrate.ts"></script>
+</head>
+<body class="bg-gray-200">
+    
+    <div class="h-screen w-full flex">
+        <div class="m-auto bg-white shadow-md p-6" v-data="todos">
+            <div class="flex items-center">
+                <div class="text-3xl">{{ date.getDate() }}</div>
+                <div class="px-2">
+                    <div class="text-xs uppercase"> {{ ['jan', 'feb', 'march', 'april', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec'][date.getMonth()] }} </div>
+                    <div class="text-xs text-gray-600"> {{ date.getFullYear() }} </div>
+                </div>
+                <div class="ml-auto tracking-tight uppercase text-xs text-gray-800"> {{ ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][date.getDay()] }} </div>
+            </div>
+
+            <div class="flex bg-white border-b">
+                <input class="outline-none" v-model="input" type="text" @keydown.enter="add" />
+                <div class="cursor-pointer bg-blue-800 text-white px-1 rounded my-1"  @click="add">add</div>
+            </div>
+            <div class="text-xs text-right">Showing {{ list.length }} items.</div>
+
+            <div class="cursor-pointer flex items-center py-1" v-for="i, index in list"  @click="i.done = !i.done;" @dblclick="list.splice(index, 1);">
+                <div :class="{'line-through text-gray-400': i.done}">{{ i.text }}</div>
+                <div class="ml-auto"> 
+                    <div class="w-4 h-4 rounded-full" :class="{'border-green-400 border-4': i.done, 'border-gray-400 border': !i.done}"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        var todos = {
+            list: [],
+            input: '',
+            date: new Date(),
+            add() {
+                if (this.input) {
+                    this.list.push({text: this.input, done: false});
+                    this.input = '';
+                }
+            },
+            created() {
+                this.list = JSON.parse(localStorage.getItem('list')) || [];
+            },
+            updated() {
+                localStorage.setItem('list', JSON.stringify(this.list));
+            }
+        }
+    </script>
+
+</body>
+</html>
