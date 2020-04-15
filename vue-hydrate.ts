@@ -1,6 +1,9 @@
 import Vue from 'vue';
 
 (function(Vue) {
+    // add Vue to global namespace
+    window.Vue = Vue;
+
     // make vm's accessible through all Vue components 
     Vue.prototype.$instances = {};
     
