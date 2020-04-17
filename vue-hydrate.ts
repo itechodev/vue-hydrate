@@ -6,12 +6,12 @@ import Vue from 'vue';
 
     // make vm's accessible through all Vue components 
     Vue.prototype.$instances = {};
-    
+
     // a list of Vue's life cycle function names
     const vueoptions: string[] = ['watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestory', 'destroyed'];
 
-    function iterateQuerySelector(query: string, callback: (node: HTMLElement) => void) {
-        var list = document.querySelectorAll(query);
+    function iterateQuerySelector(on: HTMLElement, query: string, callback: (node: HTMLElement) => void) {
+        var list = on.querySelectorAll(query);
         for (var i = 0; i < list.length; i++) {
             var l = list[i];
             if (l.nodeType == Node.ELEMENT_NODE) {
@@ -46,8 +46,14 @@ import Vue from 'vue';
 
     // wait for document to be ready
     ready(() => {
+        
         // Search for declarative vue instances in the dom
-        iterateQuerySelector('[v-data]', el => {
+        iterateQuerySelector(document.body, '[v-data]', el => {
+            // remove all v-hydrated from the dom. Should not be part of the compiler
+            iterateQuerySelector(el, '[v-hydrated]', hy => {
+                hy.remove();
+            });
+
             var options = {
                 el: el,
                 data: {},
@@ -99,7 +105,7 @@ import Vue from 'vue';
 
         // hydrate all registered vue components through Vue.component
         for (var tag in (Vue as any).options.components) {
-            iterateQuerySelector(tag, el => {
+            iterateQuerySelector(document.body, tag, el => {
                 var vm = new Vue({el});
                 // the vm has only one instance
                 addVm(el, vm.$children[0]);
