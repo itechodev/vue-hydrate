@@ -1,7 +1,20 @@
 {
+  "name": "vue-hydrate",
+  "version": "1.0.1",
+  "main": "dist/vue-hydrate.js",
+  "description": "Enable declarative Vue in your markup.",
+  "repository": "itechodev/vue-hydrate",
   "dependencies": {
     "vue": "^2.6.11"
   },
+  "scripts": {
+    "build": "tsc"
+  },
+  "prepublish": "tsc",
+  "keywords": [
+    "vue",
+    "declarative"
+  ],
   "devDependencies": {
     "typescript": "^3.8.3"
   },

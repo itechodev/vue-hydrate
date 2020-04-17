@@ -36,10 +36,7 @@ import Vue from 'vue';
         }
     }
 
-    function startsWith(s, n) {
-        if (s.startsWith) {
-            return s.startsWith(n);
-        }
+    function startsWith(s: string, n: string): boolean {
         // ie9 support
         return s.indexOf(n) == 0;
     }
@@ -53,8 +50,10 @@ import Vue from 'vue';
             iterateQuerySelector(el, '[v-hydrated]', hy => {
                 hy.remove();
             });
-
-            var options = {
+            
+            // No real value here to use type safty
+            // var options: ComponentOptions<Vue> = {  
+            var options: any = {
                 el: el,
                 data: {},
                 methods: {},
@@ -62,11 +61,13 @@ import Vue from 'vue';
                 computed: {}
             };
             
-            var value = el.attributes.getNamedItem("v-data").value;
-            var data = {};
+            var value = el.attributes.getNamedItem("v-data")?.value;
+            
+            var data: Record<string, object> = {};
+
             if (value) {
                 try {
-                    data = (new Function('return ' + value))(this);
+                    data = (new Function('return ' + value)).call(window);
                 }
                 catch (err) {
                     console.error('Could not execute v-data expression. ', err);
