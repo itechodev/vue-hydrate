@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <script src="vue-hydrate.ts"></script>
+    <script src="https://unpkg.com/vue-hydrate@1.0/dist/vue-hydrate-bundle.js"></script>
 </head>
 <body class="bg-gray-200">
     
@@ -20,7 +20,7 @@
                 <input class="outline-none" v-model="input" type="text" @keydown.enter="add" />
                 <div class="cursor-pointer bg-blue-800 text-white px-1 rounded my-1"  @click="add">add</div>
             </div>
-            <div class="text-xs text-right">Showing {{ list.length }} items. {{ reverse }}</div>
+            <div class="text-xs text-right">Showing {{ list.length }} items.</div>
 
             <div class="select-none cursor-pointer flex items-center py-1" v-for="i, index in list" @click="i.done = !i.done;" @dblclick="list.splice(index, 1);">
                 <div :class="{'line-through text-gray-400': i.done}">{{ i.text }}</div>
@@ -37,36 +37,20 @@
     </div>
 
     <script>
-        Vue.component('test', {
-            data() {
-                return {
-                    value: 12
-                }
-            },
-            template: `<div>{{value}}</div>`
-        });
-
         window.todos = {
             list: [],
             input: '',
             date: new Date(),
-            add() {
+            add: function() {
                 if (this.input) {
                     this.list.push({text: this.input, done: false});
                     this.input = '';
-                    this.$instances.test.value = this.list.length;
                 }
             },
-            computed_reverse() {
-                return this.input.split('').reverse().join('');
-            },
-            watch_input(val) {
-                console.log('Input has changed to', val);
-            },
-            created() {
+            created: function() {
                 this.list = JSON.parse(localStorage.getItem('list')) || [];
             },
-            updated() {
+            updated: function() {
                 localStorage.setItem('list', JSON.stringify(this.list));
             }
         }
