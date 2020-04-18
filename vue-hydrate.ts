@@ -46,7 +46,7 @@ import Vue from 'vue';
         
         // Search for declarative vue instances in the dom
         iterateQuerySelector(document.body, '[v-data]', el => {
-            // remove all v-hydrated from the dom. Should not be part of the compiler
+            // remove all v-hydrated from the dom. Should not be compiled
             iterateQuerySelector(el, '[v-hydrated]', hy => {
                 hy.remove();
             });

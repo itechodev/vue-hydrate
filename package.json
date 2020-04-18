@@ -1,6 +1,6 @@
 {
   "name": "vue-hydrate",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/vue-hydrate.js",
   "description": "Enable declarative Vue in your markup.",
   "repository": "itechodev/vue-hydrate",
@@ -8,14 +8,23 @@
     "vue": "^2.6.11"
   },
   "scripts": {
-    "build": "tsc"
+    "build-node": "parcel build --no-minify --no-source-maps --experimental-scope-hoisting --target node vue-hydrate.ts -o vue-hydrate.js",
+    "build-web": "parcel build --bundle-node-modules vue-hydrate.ts -o vue-hydrate-bundle.js",
+    "build": "npm run build-node && npm run build-web"
   },
-  "prepublish": "tsc",
+  "prepublish": "npm run build",
   "keywords": [
     "vue",
     "declarative"
   ],
+  "files": [
+    "dist/vue-hydrate.js",
+    "dist/vue-hydrate-bundle.js",
+    "dist/vue-hydrate.js.map",
+    "dist/vue-hydrate-bundle.js.map"
+  ],
   "devDependencies": {
+    "parcel": "^1.12.4",
     "typescript": "^3.8.3"
   },
   "alias": {
