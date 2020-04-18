@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build-node": "parcel build --no-minify --no-source-maps --experimental-scope-hoisting --target node vue-hydrate.ts -o vue-hydrate.js",
-    "build-web": "parcel build --bundle-node-modules vue-hydrate.ts -o vue-hydrate-bundle.js",
+    "build-web": "parcel build --bundle-node-modules --no-source-maps --experimental-scope-hoisting vue-hydrate.ts -o vue-hydrate-bundle.js",
     "build": "npm run build-node && npm run build-web"
   },
   "prepublish": "npm run build",
