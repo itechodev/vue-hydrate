@@ -1,6 +1,8 @@
-import Vue from 'vue';
+(function (Vue) {
+    'use strict';
 
-(function(Vue) {
+    Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
+
     // add Vue to global namespace
     window.Vue = Vue;
 
@@ -8,20 +10,20 @@ import Vue from 'vue';
     Vue.prototype.$instances = {};
 
     // a list of Vue's life cycle function names
-    const vueoptions: string[] = ['watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestory', 'destroyed'];
+    const vueoptions = ['watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestory', 'destroyed'];
 
-    function iterateQuerySelector(on: HTMLElement, query: string, callback: (node: HTMLElement) => void) {
+    function iterateQuerySelector(on, query, callback) {
         var list = on.querySelectorAll(query);
         for (var i = 0; i < list.length; i++) {
             var l = list[i];
             if (l.nodeType == Node.ELEMENT_NODE) {
-                callback(l as HTMLElement);
+                callback(l);
             }
         }
     }
-    
+
     // IE 9 compatible document ready
-    function ready(fn: () => void) {
+    function ready(fn) {
         if (document.readyState == 'complete') {
             fn();
         } else {
@@ -29,14 +31,14 @@ import Vue from 'vue';
         }
     }
 
-    function addVm(el: HTMLElement, ins: Vue) {
+    function addVm(el, ins) {
         var ref = el.attributes.getNamedItem("ref");
         if (ref) {
             Vue.prototype.$instances[ref.value] = ins;
         }
     }
 
-    function startsWith(s: string, n: string): boolean {
+    function startsWith(s, n) {
         // ie9 support
         return s.indexOf(n) == 0;
     }
@@ -53,7 +55,7 @@ import Vue from 'vue';
             
             // No real value here to use type safty
             // var options: ComponentOptions<Vue> = {  
-            var options: any = {
+            var options = {
                 el: el,
                 data: {},
                 methods: {},
@@ -61,9 +63,9 @@ import Vue from 'vue';
                 computed: {}
             };
             
-            var value = el.attributes.getNamedItem("v-data")?.value;
+            var value = el.attributes.getNamedItem("v-data").value;
             
-            var data: Record<string, object> = {};
+            var data = {};
 
             if (value) {
                 try {
@@ -105,7 +107,7 @@ import Vue from 'vue';
         });
 
         // hydrate all registered vue components through Vue.component
-        for (var tag in (Vue as any).options.components) {
+        for (var tag in Vue.options.components) {
             iterateQuerySelector(document.body, tag, el => {
                 var vm = new Vue({el});
                 // the vm has only one instance
@@ -113,4 +115,5 @@ import Vue from 'vue';
             });
         }
     });
-})(Vue);
+
+}(Vue));

@@ -26,8 +26,8 @@
   "devDependencies": {
     "parcel": "^1.12.4",
     "typescript": "^3.8.3"
-  },
-  "alias": {
-    "vue": "./node_modules/vue/dist/vue.common.js"
   }
+  // "alias": {
+  //   "vue": "./node_modules/vue/dist/vue.common.js"
+  // }
 }
