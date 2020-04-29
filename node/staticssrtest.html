@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Vue SSR</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+  
+</head>
+<body>
+
+  <div id="client"><span>{{ msg }}</span></div>
+  
+  <div id="server" data-server-rendered="true"><span>Hydrated!</span></div>
+  
+  <script>
+    // get reference to original dom elements to test client and SSR hydration
+    var client = document.getElementById('client');
+    var server = document.getElementById('server');
+
+    var data = {
+        msg: 'Hydrated!'
+    };
+
+    new Vue({
+        el: '#client',
+        data: data,
+        mounted() {
+            console.log('did client recreate dom? ', client != this.$el);
+        }
+    });
+
+    new Vue({
+        data: data,
+        mounted() {
+            console.log('#did server recreate dom? ', server != this.$el);
+        },
+        render(h) {
+            return h('div', [h('span', this.msg)]);
+        }
+    }).$mount('#server', true);
+    
+    
+  </script>
+  
+</body>
+</html>
