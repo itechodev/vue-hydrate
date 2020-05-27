@@ -16,7 +16,7 @@ import 'vue-hydrate';
 
 ### CDN 
 ```html
-<script src="vue-hydrate.js"></script>
+<script src="https://unpkg.com/vue-hydrate@1.0/dist/vue-hydrate-bundle.js"></script>
 ```
 
 # Features

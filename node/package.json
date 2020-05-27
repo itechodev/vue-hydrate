@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "puppeteer": "^3.1.0",
     "vue-template-compiler": "^2.6.11"
   }
 }

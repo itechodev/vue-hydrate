@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="item in items">{{ item }}</li>
+        </ul>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+    <script>
+        // window.addEventListener('rendered', e => {
+        //     console.log('Page rendered', e.detail);
+        // });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                items: ['1', '2', '3']
+            },
+            mounted: function () {
+                if (window.renderEvent) {
+                    window.renderEvent('app', this.$el.outerHTML);
+                }
+                // window.dispatchEvent(new CustomEvent('rendered', {detail:  this.$el.outerHTML}));
+                // window.onCustomEvent({type: 'asfsd', detail: 'Sirr'});
+            }
+        });
+    </script>
+</body>
+
+</html>
