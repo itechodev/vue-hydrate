@@ -4,10 +4,11 @@ puppeteer.launch({
     headless: true
 }).then(async (browser) => {
     const page = await browser.newPage();
-    
+
     var ret = new Promise(async (res, rej) => {
         // Expose a handler to the page
         var timer = null;
+
         await page.exposeFunction('renderEvent', (id, content) => {
             console.log(`Event fired: ${id}, htmlContent: ${content}`);
             // cancel the timer
@@ -17,13 +18,22 @@ puppeteer.launch({
 
         timer = setTimeout(() => {
             console.log('Timer done');
-            rej();
+            rej('timeout');
         }, 2000);
-        await page.goto('http://localhost:8080');
-    });
 
-    var res = await ret;
-    console.log('Result', res);
+        page.goto('http://localhost:8080').catch(error => {
+            clearTimeout(timer);
+            rej(error);
+        });
+    });
+    
+    try {
+        var res = await ret;
+        console.log('Success: ', res);
+    } catch (error) {
+        console.log('Error: ', error);
+    }
+    
     await browser.close();
     
     // await page.setContent(htmlContent);
