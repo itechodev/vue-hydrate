@@ -1,3 +1,6 @@
+const Vue = require('Vue/dist/vue.esm.js');
+//vue.esm.js
+
 (function (Vue) {
     'use strict';
 
@@ -45,7 +48,6 @@
 
     // wait for document to be ready
     ready(() => {
-        
         // Search for declarative vue instances in the dom
         iterateQuerySelector(document.body, '[v-data]', el => {
             // remove all v-hydrated from the dom. Should not be compiled
