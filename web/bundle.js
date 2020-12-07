@@ -1,16 +1,16 @@
-const Vue = require('Vue/dist/vue.common.js');
+const Vue = require('vue/dist/vue.common.js');
 
 // make vm's accessible through all Vue components 
 Vue.prototype.$instances = {};
 
-// a list of Vue's life cycle function names
-const vueoptions = ['watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestory', 'destroyed'];
+// a list of Vue`s life cycle function names
+const lifecycles = ['watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestroy', 'destroyed'];
 
 function iterateQuerySelector(on, query, callback) {
-    var list = on.querySelectorAll(query);
-    for (var i = 0; i < list.length; i++) {
-        var l = list[i];
-        if (l.nodeType == Node.ELEMENT_NODE) {
+    const list = on.querySelectorAll(query);
+    for (let i = 0; i < list.length; i++) {
+        const l = list[i];
+        if (l.nodeType === Node.ELEMENT_NODE) {
             callback(l);
         }
     }
@@ -18,7 +18,7 @@ function iterateQuerySelector(on, query, callback) {
 
 // IE 9 compatible document ready
 function ready(fn) {
-    if (document.readyState == 'complete') {
+    if (document.readyState === 'complete') {
         fn();
     } else {
         document.addEventListener('DOMContentLoaded', fn);
@@ -26,7 +26,7 @@ function ready(fn) {
 }
 
 function addVm(el, ins) {
-    var ref = el.attributes.getNamedItem("ref");
+    const ref = el.attributes.getNamedItem("ref");
     if (ref) {
         Vue.prototype.$instances[ref.value] = ins;
     }
@@ -34,7 +34,7 @@ function addVm(el, ins) {
 
 function startsWith(s, n) {
     // ie9 support
-    return s.indexOf(n) == 0;
+    return s.indexOf(n) === 0;
 }
 
 // wait for document to be ready
@@ -46,19 +46,18 @@ ready(() => {
             hy.remove();
         });
         
-        // No real value here to use type safty
+        // No real value here to use type safety
         // var options: ComponentOptions<Vue> = {  
-        var options = {
+        const options = {
             el: el,
             data: {},
             methods: {},
             watch: {},
             computed: {}
         };
-        
-        var value = el.attributes.getNamedItem("v-data").value;
-        
-        var data = {};
+
+        const value = el.attributes.getNamedItem("v-data").value;
+        let data = {};
 
         if (value) {
             try {
@@ -73,8 +72,8 @@ ready(() => {
         // [Vue warn]: Failed to resolve directive: data
         el.attributes.removeNamedItem('v-data');
 
-        for (var k in data) {
-            var v = data[k];
+        for (const k in data) {
+            const v = data[k];
             if (startsWith(k, 'watch_')) {
                 // add as a watch
                 options.watch[k.substr(6)] = v;
@@ -86,7 +85,7 @@ ready(() => {
                 continue;
             }
             if (typeof v == 'function') {
-                if (vueoptions.indexOf(k) != -1) {
+                if (lifecycles.indexOf(k) !== -1) {
                     options[k] = v;
                     continue;
                 }
@@ -100,9 +99,9 @@ ready(() => {
     });
 
     // hydrate all registered vue components through Vue.component
-    for (var tag in Vue.options.components) {
+    for (const tag in Vue.options.components) {
         iterateQuerySelector(document.body, tag, el => {
-            var vm = new Vue({el});
+            const vm = new Vue({el});
             // the vm has only one instance
             addVm(el, vm.$children[0]);
         });
