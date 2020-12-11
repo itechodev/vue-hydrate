@@ -1,38 +1,38 @@
-import Vue from 'vue/dist/vue.common.js';
 
+export default {
+    install: function(Vue, options) {
 
-const vm = new Vue ({
-    data: {
-        path: null
-    }
-});
+        // Inject reactive data
+        const vm = new Vue({
+            data: {
+                path: null
+            }
+        });
 
-const routeComponents = [];
+        function refreshRouters() {
+            vm.path = document.location.pathname;
+        }
 
-window.onpopstate = function(event) {
-    refreshRouters();
-}
+        window.onpopstate = function (event) {
+            refreshRouters();
+        }
 
-export default function refreshRouters() {
-    vm.path = document.location.pathname;
-    // data.path =
-    for (const r of routeComponents) {
-        r.show = r.url === document.location.pathname;
-    }
-}
+        Vue.prototype.$router = {
 
-Vue.prototype.$router = {
+            get path() {
+                return vm.path;
+            },
 
-    get path() {
-        return vm.path;
-    },
+            push(url, data) {
+                window.history.pushState(data, url, url);
+                refreshRouters();
+            },
 
-    push(url, data) {
-        window.history.pushState(data, url, url);
+            match(path) {
+                return this.path === path;
+            }
+        }
+
         refreshRouters();
-    },
-
-    match(path) {
-        return this.path === path;
     }
 }

@@ -1,5 +1,7 @@
 import Vue from 'vue/dist/vue.common.js';
-import refreshRouters from './router';
+import Router from './router';
+
+Vue.use(Router);
 
 // make vm's accessible through all Vue components
 Vue.prototype.$instances = {};
@@ -111,7 +113,5 @@ ready(() => {
             addVm(el, vm.$children[0]);
         });
     }
-
-    refreshRouters();
 });
 
