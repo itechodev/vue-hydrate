@@ -7,6 +7,18 @@
     <script src="./bundle.js"></script>
 </head>
 <body>
-    <div v-data="{message: 'It works'}">{{ message }}</div>
+    <v-route url="/quite">
+        <p>Quite so my dear</p>
+        <p @click="$router.push('/')">Back</p>
+    </v-route>
+
+    <div v-data="{
+        message: 'Outside. It also works',
+        counter: 0,
+        click() {
+                this.$router.push('/quite');
+        }
+    }" @click="click()">{{ message }}</div>
+
 </body>
 </html>

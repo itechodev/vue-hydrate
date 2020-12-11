@@ -1,6 +1,7 @@
-const Vue = require('vue/dist/vue.common.js');
+import Vue from 'vue/dist/vue.common.js';
+import refreshRouters from './router';
 
-// make vm's accessible through all Vue components 
+// make vm's accessible through all Vue components
 Vue.prototype.$instances = {};
 
 // a list of Vue`s life cycle function names
@@ -37,8 +38,12 @@ function startsWith(s, n) {
     return s.indexOf(n) === 0;
 }
 
+
+
+
 // wait for document to be ready
 ready(() => {
+
     // Search for declarative vue instances in the dom
     iterateQuerySelector(document.body, '[v-data]', el => {
         // remove all v-hydrated from the dom. Should not be compiled
@@ -106,5 +111,7 @@ ready(() => {
             addVm(el, vm.$children[0]);
         });
     }
+
+    refreshRouters();
 });
 
