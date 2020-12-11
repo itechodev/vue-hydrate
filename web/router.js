@@ -3,19 +3,18 @@ export default {
     install: function(Vue, options) {
 
         // Inject reactive data
+        // Other way is to use a global mixin, but then you'll have to use $data.$route
         const vm = new Vue({
             data: {
                 path: null
             }
         });
 
-        function refreshRouters() {
+        function refresh() {
             vm.path = document.location.pathname;
         }
 
-        window.onpopstate = function (event) {
-            refreshRouters();
-        }
+        window.onpopstate = refresh;
 
         Vue.prototype.$router = {
 
@@ -25,7 +24,7 @@ export default {
 
             push(url, data) {
                 window.history.pushState(data, url, url);
-                refreshRouters();
+                refresh();
             },
 
             match(path) {
@@ -33,6 +32,6 @@ export default {
             }
         }
 
-        refreshRouters();
+        refresh();
     }
 }
