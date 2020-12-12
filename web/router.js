@@ -8,7 +8,7 @@ function decodeQuery(queryString) {
     return query;
 }
 
-function encodeQuery(query) {
+export function encodeQuery(query) {
     let q = [];
     for (let k in query) {
         if (query.hasOwnProperty(k))
