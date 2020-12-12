@@ -1,3 +1,22 @@
+function decodeQuery(queryString) {
+    const query = {};
+    const pairs = (queryString.charAt(0) === '?' ? queryString.substr(1) : queryString).split('&');
+    for (let i = 0; i < pairs.length; i++) {
+        const pair = pairs[i].split('=');
+        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+    }
+    return query;
+}
+
+function encodeQuery(query) {
+    let q = [];
+    for (let k in query) {
+        if (query.hasOwnProperty(k))
+            q.push(k + '=' + encodeURIComponent(query[k]));
+    }
+    return q.join();
+}
+
 
 export default {
     install: function(Vue, options) {
@@ -7,13 +26,17 @@ export default {
         const vm = new Vue({
             data: {
                 path: null,
-                params: {}
+                params: {},
+                query: {}
             }
         });
 
+
         function refresh() {
             vm.path = document.location.pathname;
+            vm.query = decodeQuery(document.location.search);
         }
+
 
         window.onpopstate = refresh;
 
@@ -28,8 +51,14 @@ export default {
                 return vm.params;
             },
 
-            push(url, data) {
-                window.history.pushState(data, url, url);
+            get query() {
+                return vm.query;
+            },
+
+            push(url, query) {
+                if (query && typeof query === 'object')
+                    url += '?' + encodeQuery(query)
+                window.history.pushState(null, null, url);
                 refresh();
             },
 

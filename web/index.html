@@ -32,7 +32,7 @@
         <div>Router params: {{ $router.params }}</div>
         <div>Router query: {{ $router.query }}</div>
 
-        <div @click="$router.push('/book/' + counter++)">Go to book</div>
+        <div @click="$router.push('/book/' + counter++, {counter: counter})">Go to book</div>
         <div @click="$router.push('/')">Go home</div>
     </div>
 
