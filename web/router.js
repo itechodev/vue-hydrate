@@ -70,13 +70,14 @@ export default {
                     seg.unshift(p[1]);
                 }
 
-                let match = this.path.match(new RegExp(path));
+                let match = vm.path.match(new RegExp(path));
                 if (match != null) {
                     const newSet = {};
                     seg.forEach((s, i) => {
                         newSet[s] = match[i + 1];
                     });
                     vm.params = newSet;
+                    return true;
                 }
                 return false;
             }
