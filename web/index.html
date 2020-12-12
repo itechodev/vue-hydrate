@@ -17,19 +17,22 @@
 <body>
 
     <transition name="fade">
-        <div v-if="$router.match('/quite')">
-            <p>Quite so my dear</p>
+        <div v-if="$router.match('/:what/:id')">
+            <p>Quite so my dear </p>
             <p @click="$router.push('/')">Back</p>
         </div>
     </transition>
 
     <div v-data="{
         message: 'It works',
-        counter: 0
+        counter: 1
     }">
         <div>{{ message }}</div>
         <div>Router path: {{ $router.path }}</div>
-        <div @click="$router.push('/quite')">Go to /quite</div>
+        <div>Router params: {{ $router.params }}</div>
+        <div>Router query: {{ $router.query }}</div>
+
+        <div @click="$router.push('/book/' + counter++)">Go to book</div>
         <div @click="$router.push('/')">Go home</div>
     </div>
 

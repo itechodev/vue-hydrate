@@ -12,9 +12,13 @@ export default {
 
         function refresh() {
             vm.path = document.location.pathname;
+
+            // /book/12 match /:book/:id
+
         }
 
         window.onpopstate = refresh;
+
 
         Vue.prototype.$router = {
 
@@ -28,7 +32,9 @@ export default {
             },
 
             match(path) {
-                return this.path === path;
+                // convert /:book/:id to regex /\/(\w+)\/(\w+)/
+
+                return false;
             }
         }
 
