@@ -9,7 +9,7 @@ Vue.use(Ajax);
 Vue.prototype.$instances = {};
 
 // a list of Vue`s life cycle function names
-const lifecycles = ['watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestroy', 'destroyed'];
+const lifecycles = ['data', 'watch', 'computed', 'beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'beforeDestroy', 'destroyed'];
 
 function iterateQuerySelector(on, query, callback) {
     const list = on.querySelectorAll(query);
