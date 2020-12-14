@@ -44,12 +44,11 @@ function startsWith(s, n) {
 
 
 
-
 // wait for document to be ready
 ready(() => {
 
     // Search for declarative vue instances in the dom
-    iterateQuerySelector(document.body, '[v-data]', el => {
+    iterateQuerySelector(document.body, '[v-app]', el => {
         // remove all v-hydrated from the dom. Should not be compiled
         iterateQuerySelector(el, '[v-hydrated]', hy => {
             hy.remove();
@@ -65,7 +64,7 @@ ready(() => {
             computed: {}
         };
 
-        const value = el.attributes.getNamedItem("v-data").value;
+        const value = el.attributes.getNamedItem("v-app").value;
         let data = {};
 
         if (value) {
@@ -79,7 +78,7 @@ ready(() => {
         
         //  now remove the v-data to avoid err
         // [Vue warn]: Failed to resolve directive: data
-        el.attributes.removeNamedItem('v-data');
+        el.attributes.removeNamedItem('v-app');
 
         for (const k in data) {
             const v = data[k];

@@ -17,7 +17,6 @@ export function encodeQuery(query) {
     return q.join();
 }
 
-
 export default {
     install: function(Vue, options) {
 
@@ -66,9 +65,7 @@ export default {
             }
         }
 
-
         window.onpopstate = refresh;
-
 
         Vue.prototype.$router = {
 
@@ -104,7 +101,7 @@ export default {
             }
         }
 
-        // Set initial path and query params
+        // initial path query params
         refresh();
     }
 }
