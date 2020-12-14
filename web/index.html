@@ -16,18 +16,23 @@
 </head>
 <body>
 
+<!--    <v-router url="/:what/:id">-->
+<!--        -->
+<!--    </v-router>-->
+
     <transition name="fade">
         <div v-if="$router.match('/:what/:id')">
-            <p>Quite so my dear </p>
+            <p>Book #{{ $router.params.id }} </p>
             <p @click="$router.push('/')">Back</p>
         </div>
     </transition>
 
     <div v-data="{
         message: 'It works',
-        counter: 1
+        counter: 15
     }">
         <div>{{ message }}</div>
+        <div>Router internals: {{ $router.internal }}</div>
         <div>Router path: {{ $router.path }}</div>
         <div>Router params: {{ $router.params }}</div>
         <div>Router query: {{ $router.query }}</div>

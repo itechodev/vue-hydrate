@@ -27,14 +27,43 @@ export default {
             data: {
                 path: null,
                 params: {},
-                query: {}
+                query: {},
+                hit: {}
             }
         });
 
+        const cache = [];
+
+        function parsePath(path) {
+            // reverse order
+            let seg = [];
+            for (let p of [...path.matchAll(/:(\w+)/g)].reverse()) {
+                path = path.substr(0, p.index) + "(\\w+)" + path.substr(p.index + p[0].length);
+                seg.unshift(p[1]);
+            }
+            return {seg, pattern: path};
+        }
+
+        function matchRoute(route) {
+            let match = vm.path.match(new RegExp(route.pattern));
+            if (match != null) {
+                const newSet = {};
+                route.seg.forEach((s, i) => {
+                    newSet[s] = match[i + 1];
+                });
+                vm.params = newSet;
+                Vue.set(vm.hit, route.path, true)
+            } else
+                Vue.set(vm.hit, route.path, false)
+        }
 
         function refresh() {
             vm.path = document.location.pathname;
             vm.query = decodeQuery(document.location.search);
+
+            for (let obj of cache) {
+                matchRoute(obj);
+            }
         }
 
 
@@ -63,26 +92,19 @@ export default {
             },
 
             match(path) {
-                // reverse order
-                let seg = [];
-                for (let p of [...path.matchAll(/:(\w+)/g)].reverse()) {
-                    path = path.substr(0, p.index) + "(\\w+)" + path.substr(p.index + p[0].length);
-                    seg.unshift(p[1]);
+                let hit = vm.hit[path];
+                if (hit === undefined) {
+                    let {pattern, seg} = parsePath(path);
+                    let route = { path,  pattern,  seg };
+                    cache.push(route);
+                    matchRoute(route);
+                    return false;
                 }
-
-                let match = vm.path.match(new RegExp(path));
-                if (match != null) {
-                    const newSet = {};
-                    seg.forEach((s, i) => {
-                        newSet[s] = match[i + 1];
-                    });
-                    vm.params = newSet;
-                    return true;
-                }
-                return false;
+                return hit;
             }
         }
 
+        // Set initial path and query params
         refresh();
     }
 }
