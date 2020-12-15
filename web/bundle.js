@@ -2,6 +2,8 @@ import Vue from 'vue/dist/vue.common.js';
 import Router from './router';
 import Ajax from './ajax.js';
 
+window.Vue = Vue;
+
 Vue.use(Router);
 Vue.use(Ajax);
 
